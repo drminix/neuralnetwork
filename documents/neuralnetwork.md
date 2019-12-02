@@ -2,7 +2,7 @@
 ## What is a neural network
 
 - Deep learning refers "training very large neural network". 
-- Each neuron performs certain operations like a multivariate linear regression(Y=WX+B) followed by a non-linear activation function operation such as ReLU
+- Each neuron performs certain operations like computing a weighted sum followed by a non-linear activation function operation such as ReLU.
 - Neural network is formed by stacking multiple layer of neurons.
 Example neural network is shown below.
 ![alt text](img/simplenn.png)
@@ -26,13 +26,32 @@ Example neural network is shown below.
 - Examples: (1) Clustering, Dimension Reduction, and etc. 
 
 ## Why Deep learning is taking off?
-- Scale drives deep learning process. "Scale" means both (1) labled data & (2) size of NN.
+- Scale drives deep learning process. "Scale" means both (1) labelled data & (2) size of NN.
 - GPU + More Data(Digitization of data) + Algorithm advances in NN = Big Bang!
 - One of the huge breakthrough in NN has been switching from SIGMOD function to ReLU function!. It's more computationally efficient!  Learning is slow in SIGMOD when gradient is nearly zero.
 - Use of ReLU made the computation of gradient descent much faster.
 
 ## Logistic Regression as a Neural Network
-### Binary Classification
+- Logistic regression is a type of regression analysis method often used to predict the value of binary dependent variable.
+- In Logistic regression, we use a logistic function to constrain the value of the dependent variable such that its value can't be smaller than 0 and bigger than 1.
+- In Logistic regression, we use a logstic model to model the probability of a certain class or event existing. 
+- Sigmoid function is a mathematical function having a characteristic "S"-shaped curve. Standard choice for a sigmoid function is the logicstic function whose formula is defined as S(x) = 1 / (1+e^(-x)). There are other sigmoid functinos such as arctangent function.
+
+## Backpropagation and gradient descent.
+- Training neural network consists of (1) forward propagation to get predictions (2) backpropagation to compute derivatives and (3) gradient descent update to adjust parameters.
+- In forward propagation, we propagate our training set through the neural network to get our estimated labels. Then we can compute the cost function by subtracting the true labels with our estimated labels. By the way, we can't use a simply least square as a cost function since it is not convex;thus has a local minima. We need to use a convex function so that we can always reach a global minimum. 
+- We use a gradient descent method to minimize our cost function. Since the cost function is a convex function, it is guaranteed to reach a global minimum with gradient descent method.
+
+## Tips
+- Always give an explicit size using reshape function. Avoid using a rank-1 array. Either use a row or column vector. You can enforce that by using `keepdims=True` parameter in numpy.
+- reshape operation is O(1). 
+- Another common technique we use in Machine Learning and Deep Learning is to normalize our data. It often leads to a better performance because gradient descent converges faster after normalization.
+- Normalization means changing x to x/||X||. That is dividing each row vector x by its norm
+- For example:  `x_norm = np.linalg.norm(x, ord=2, axis=1, keepdims=True)`
+
+
+
+
 
 
 
