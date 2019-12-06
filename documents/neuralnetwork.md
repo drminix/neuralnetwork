@@ -49,7 +49,24 @@ Example neural network is shown below.
 - Normalization means changing x to x/||X||. That is dividing each row vector x by its norm
 - For example:  `x_norm = np.linalg.norm(x, ord=2, axis=1, keepdims=True)`
 
+## Common steps for pre-processing a new data set:
+- Figure out the dimensions and shapes of the problem (m_train, m_test, num_px, ...)
+- Reshape the datasets such that each example is now a vector of size (num_px * num_px * 3, 1)
+- To flatten a matrix X of shape (a,b,c,d) to a matrix X_flatten of shape (b*c*d,a). 
+- `X_flatten = X.reshape(X.shape[0],-1).T`
+- This is useful when a matrix represents (number_training_set,height,width,channel)
+- This results in (flattened_image, number_training_set)
+- "Standardize" the data. Subtract the mean from each example and divide it by the standard deviation. 
+- It converges faster! For image data, we can just divide each pixel by the maximum value of a pixel channel
 
+## Main steps for building a neural network 
+1. Define the model structure (such as number of input features, number of layers, type of layers, and etc.)
+2. Initialize the model's parameters
+3. Loop
+   -- Forward propagation: calculate the current prediction and current loss 
+   -- Backward propagation: calculate current gradient for evey neuron
+   -- Gradient descent: Update parameters 
+   
 
 
 
