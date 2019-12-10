@@ -66,7 +66,35 @@ Example neural network is shown below.
    -- Forward propagation: calculate the current prediction and current loss 
    -- Backward propagation: calculate current gradient for evey neuron
    -- Gradient descent: Update parameters 
-   
+
+## Activtion functions
+1. Sigmoid(logistic function): a = 1/(1+e^-z)
+-- Never use it unless in the output layer if you are doing a binary classification since its output is constrained to be between 0 and 1
+-- Computationally expensive.
+-- Slow learning when z is large or small!!
+
+2. Tanh function: a = (e^z-e^-z) /(e^z+e^z)
+-- Superior than sigmoid!!
+
+3. ReLU a=max(0,z)
+-- Most commonnly used
+-- much faster learning!
+-- Computationally inexpensive!!
+-- Derivative is 0 when z is negative but z is usually greater than 0.
+-- Derivative of z iss not defined when z is 0 but the chance of having exact 0 is very low. We can define the derivative to be either 0 or 1.
+
+4. Leakly ReLU a=max(0.01z,z)
+-- works better than ReLU but not used much
+
+## Why do we need non-linear activation fns?
+-- If you don't use non-linear activation fn and use linear activation fn, the neural network can be simplified to linear activation function and all the hidden layer becomes useless since a composite of linear hidden layer is just a linear fn. For example, deep neural network with a lot of hidden layers can be simplified to 1 layer network. This cannot capture any complex behaviors.
+- We can use a linear activation fn in the output layer when the dependent variable is numeric-scale values.
+
+## Random initialization
+- Need to initialize W to random numbers to zeroes otherwise all neurons in the same layer will be doing the same computations. 
+- By initilizing w with random numbers, we can avoid symmetry problem. This is commonly called "symmetry breaking".
+- Initialize to small number to avoid big or small z values which leads to small derivatives which in turn results in "slow learning".
+
 
 
 
