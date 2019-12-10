@@ -3,13 +3,13 @@
 #
 # @author: Sang-hyeb Lee
 # @license: MIT
-
 """Implements rudimentary deep neural network in Python3
 
 DeepNeuralNetwork class implements a minimal implementation of deep neural network.
 """
 
 import numpy as np
+
 
 # utility function
 class Utility:
@@ -32,22 +32,22 @@ class Utility:
         dZ = dA * s * (1 - s)
         return dZ
 
+
 #worker class
 class DeepNeuralNetwork:
     """implements a deep neural network"""
+    def __init__(self, n, activation_list):
+        self.initialize_parameters(n, activation_list)
 
-    def __init__(self,n,activation_list):
-        self.initialize_parameters(n,activation_list)
-
-    def predict(self,sample):
+    def predict(self, sample):
         AL, caches = self.perform_forward_propagation(sample, self._parameters)
         return AL
 
-    def train(self,dataset, hyperparameters=None):
+    def train(self, dataset, hyperparameters=None):
         """train network for given dataset"""
         # 1. Define hyperparameters if not given
         if hyperparameters is None:
-            hyperparameters={}
+            hyperparameters = {}
             hyperparameters["learning_rate"] = 0.0075
             hyperparameters["num_iteration"] = 100
 
@@ -59,13 +59,15 @@ class DeepNeuralNetwork:
             AL, caches = self.perform_forward_propagation(X, self._parameters)
 
             #(b) compute cost function
-            cost = self.compute_cost_binary(AL,Y)
+            cost = self.compute_cost_binary(AL, Y)
 
             #(c) perform backward propagation
-            grads = self.perform_backward_propagation(AL,dataset["Y"],caches,self._parameters)
+            grads = self.perform_backward_propagation(AL, dataset["Y"], caches,
+                                                      self._parameters)
 
             #(d) perform update
-            self._parameters = self.update_parameteres(self._parameters,grads,hyperparameters["learning_rate"])
+            self._parameters = self.update_parameteres(
+                self._parameters, grads, hyperparameters["learning_rate"])
 
             #(4) print the cost
             print(f"cost at {i}th iteration : {cost}")
@@ -122,10 +124,10 @@ class DeepNeuralNetwork:
 
         assert (A.shape == (W.shape[0], A_prev.shape[1]))
 
-        cache = ((A_prev,W,b),Z)
+        cache = ((A_prev, W, b), Z)
         return A, cache
 
-    def perform_forward_propagation(self,X,parameters):
+    def perform_forward_propagation(self, X, parameters):
         """ Implement forwad propagation
 
         @parameters:
@@ -185,7 +187,6 @@ class DeepNeuralNetwork:
         elif activation == "sigmoid":
             dZ = Utility.sigmoid_backward(dA, Z)
 
-
         # (2) perform linear part
         A_prev, W, b = linear_cache
         m = A_prev.shape[1]
@@ -225,12 +226,14 @@ class DeepNeuralNetwork:
         gradients["db"] = {}
 
         # (2) perform backpropagation
-        dAL = -(np.divide(Y, AL) - np.divide(1 - Y, 1 - AL))  # element-wise division
+        dAL = -(np.divide(Y, AL) - np.divide(1 - Y, 1 - AL)
+                )  # element-wise division
 
         for l in reversed(range(L)):  # from L-1 to 0
 
             current_cache = caches[l]
-            dA_prev, dW, db = self.linear_activation_backward(dAL, current_cache, parameters["activation"][l + 1])
+            dA_prev, dW, db = self.linear_activation_backward(
+                dAL, current_cache, parameters["activation"][l + 1])
             # store the output
             # layer 1 - hidden layer
             # layer 0 - input layer
@@ -257,9 +260,11 @@ class DeepNeuralNetwork:
         """
         L = parameters["L"]
         #print(grads)
-        for l in range(1,L):
+        for l in range(1, L):
 
-            parameters["W"][l] = parameters["W"][l] - learning_rate * grads["dW"][l]
-            parameters["b"][l] = parameters["b"][l] - learning_rate * grads["db"][l]
+            parameters["W"][
+                l] = parameters["W"][l] - learning_rate * grads["dW"][l]
+            parameters["b"][
+                l] = parameters["b"][l] - learning_rate * grads["db"][l]
 
         return parameters
