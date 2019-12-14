@@ -148,7 +148,7 @@ class DeepNeuralNetwork:
 
         return A, caches
 
-    #   b. compute cost function
+    #   b. compute cost function -- using the cross-entropy cost function
     def compute_cost_binary(self, AL, Y):
         """Compute the cost function(x) = -1/m * np.sum(Y * np.log(AL)+(1-Y)*np.log(1-AL))
 
