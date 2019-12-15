@@ -78,13 +78,13 @@ Example neural network is shown below.
 -- Superior than sigmoid!!
 
 3. ReLU a=max(0,z)
--- Most commonnly used
+-- Most commonly used
 -- much faster learning!
 -- Computationally inexpensive!!
 -- Derivative is 0 when z is negative but z is usually greater than 0.
 -- Derivative of z iss not defined when z is 0 but the chance of having exact 0 is very low. We can define the derivative to be either 0 or 1.
 
-4. Leakly ReLU a=max(0.01z,z)
+4. Leaky ReLU a=max(0.01z,z)
 -- works better than ReLU but not used much
 
 ## Why do we need non-linear activation fns?
@@ -94,9 +94,43 @@ Example neural network is shown below.
 ## Random initialization
 - Need to initialize W to random numbers to zeroes otherwise all neurons in the same layer will be doing the same computations. 
 - By initializing w with random numbers, we can avoid symmetry problem. This is commonly called "symmetry breaking".
+- By initializing w with random numbers, we can avoid symmetry problem. This is commonly called "symmetry breaking".
 - Initialize to small number to avoid big or small z values which leads to small derivatives which in turn results in "slow learning".
 
+## Intuition about deep representation. Why does it work so well?
+1. Simple Intuition" input -> simple features -> complex features
+2. From Circuit Theory: So this result comes from circuit theory of which pertains the thinking about what types of functions you can compute with different AND gates, OR gates, NOT gates, basically logic gates. So informally, their functions compute with a relatively small but deep neural network and by small I mean the number of hidden units is relatively small. But if you try to compute the same function with a shallow network, so if there aren't enough hidden layers, then you might require exponentially more hidden units to compute
+3. Just Branding: Deep NN used to be called a NN with a lot of hidden layers
 
+## Forwarding and backward function
+NN consists of two different types of units:
+(1) Forward function unit: It takes in a[l-1] and outputs a[l]. It uses parameters w[l] and b[l] and caches z[l]. These values are used duing backpropagation for computing the derivaties
+(2) Backward function unit: It takes in da[l] and outputs da[l-1]. It uses the cached values from the forward function and computes w[l],b[l], and dz[l]. Each unit computes dw[l] and b[l] which are then used to update w[l] and b[l] parameters for given layer l.
+
+## NOTE - a lot of complexity comes from data not the algorithm. That is your NN can do unexpectedly complex task.
+
+## Parameters and HyperParameters
+Parameters: W[l] and b[l]
+Hyper parameters: Which controls the paramters W[l] and b[l]
+1. learning rate alpha
+2. number of iteration
+3. hidden layer
+4. hidden units
+5. choice of activation fn
+6. Momentum
+7. Minibatch size
+8. Regularization parameters.
+
+## What dos NN have to do with the brain?
+1. Analogy of the neural network to the human brain is an over-simplification.
+2. People started using human brain analogy which is a overly simplified analogy. It's hard to convey the intuition behind NN.
+3. Neuroscientist have no idea what a single neuron is doing...
+
+
+
+
+
+ 
 ## Useful references
 1. http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/
 2. https://stats.stackexchange.com/questions/211436/why-do-we-normalize-images-by-subtracting-the-datasets-image-mean-and-not-the-c
