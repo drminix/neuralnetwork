@@ -63,7 +63,8 @@ Example neural network is shown below.
 1. Define the model structure (such as number of input features, number of layers, type of layers, and etc.)
 2. Initialize the model's parameters
 3. Loop
-   -- Forward propagation: calculate the current prediction and current loss 
+   -- Forward propagation: calculate the current prediction 
+   -- Compute loss
    -- Backward propagation: calculate current gradient for evey neuron
    -- Gradient descent: Update parameters 
 
@@ -92,11 +93,12 @@ Example neural network is shown below.
 
 ## Random initialization
 - Need to initialize W to random numbers to zeroes otherwise all neurons in the same layer will be doing the same computations. 
-- By initilizing w with random numbers, we can avoid symmetry problem. This is commonly called "symmetry breaking".
+- By initializing w with random numbers, we can avoid symmetry problem. This is commonly called "symmetry breaking".
 - Initialize to small number to avoid big or small z values which leads to small derivatives which in turn results in "slow learning".
 
 
 ## Useful references
 1. http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/
 2. https://stats.stackexchange.com/questions/211436/why-do-we-normalize-images-by-subtracting-the-datasets-image-mean-and-not-the-c
- 
+3. http://cs231n.github.io/neural-networks-case-study/
+4. http://scs.ryerson.ca/~aharley/neural-networks/
