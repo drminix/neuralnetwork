@@ -126,11 +126,58 @@ Hyper parameters: Which controls the paramters W[l] and b[l]
 2. People started using human brain analogy which is a overly simplified analogy. It's hard to convey the intuition behind NN.
 3. Neuroscientist have no idea what a single neuron is doing...
 
+## Unbiased vs Consistent estimator
+Estimator is said to be unbiased if the expected value of estimator is equal to the true parameter. That is E(X) = u. Estimator might be biased but consistent. In this case, estimator becomes unbiased estimator if we collect more datasets. 
+
+## How to fix NN when it has high bias.
+When our model has high bias, it means that our estimator is unbiased estimators, meaning that there is a difference between the expected value of our estimator, E(X) and the true parameter u. That is, bias = E(X) - u. In NN, it usually means that our NN model is not trainined enough with the training set. High bias can be alleviated by using (1) a bigger network (more neurons or deeper layers), (2) increasing the number of iterations, (3) or using a different type of NN.
+
+## How to fix NN when it has high variance
+When the prediction error for test set is high, it is most likely to have high variance problem. High Variance can be alleviated by using (1) more training dataset eith by collecting more data set or using data augmentation, (2) using L-2 regualrization technique to penalize the cost function if W gets too large, (3) using a technique like dropout, (4) early stopping to stop training when the prediction errors on training set and dev set start to diverge. L-2 regularizaiton technique is also called weight decay, since the regularizaiton term forces W to become smaller at every iteration.
 
 
+## Optimization
+Deep learning is a highly iterative process so it is important to be able to try out ideas quickly. It is especially important when the training set is very large. So how do we make NN train faster?
+
+1. normalize input feature vector X so that every element is in the same scale.
+Standardlize them by $x-mean /variance$. 
+
+2. Pervent weight vanishing or exploding by using clever weight initialization method like xaiver random initilization method.
+
+3. Batch gradient descent vs Mini-batch gradient descent
+In batch gradient descent, you go through every examples in the training-set before you update the training set. The downside of gradient descent is that it takes long before we update the network. In mini-batch gradient descent, we don't wait until you process all the training dataset. Training set is divided into a smaller subset and gradient descent update is performed for each subset. If we set the mini batch size to be 1, then we are doing a stochastic gradient descent update. The biggest problem with stochastic gradient descent is that it is slow since we are not taking advantage of vectorization.
+
+How do we choose the right mini-batch size? If the training set is small, use a batch gradient descent(size = m). If the training set is large, use a mini-batch gradient descent(size = 2^6(64), 2^7(128), 2^8(256)) Make sure that it fits CPU/GPU memory.
+
+4.  Gradient descent with momentum
+It almost always converges faster than standard gradient descent algorithm. Basic idea is to compute an exponentially weighted average of gradients and then use that gradient to update your weight. Instead of using $dw$ and $db$ to update your parameters, use exponentially weighted moving averages. that is use $V_{dw}$ and $V_{db}$ where $V_{dw} = \beta V_{dw} + (1-\beta) dw$. $W = W - alpha * V_{dw}$ It smooth out the  steps of gradient descent. There is new hyper parameter, $\beta = 0.9$
+
+- Exponentially weighted moving average has a formula of $V_t = \beta V_{t-1} + (1-\beta) V_{t-1}$. $V_t$ is approximately averaging over $1/(1-\beta) $ days. For example, $\beta=0.9$ represents 10 days. Weight of each day varies with the formula $(0.9)^x$. Not as accurate as moving window but it has very memory foot print since we only need to store one variable, $\theta_t$
+
+- $V_t = \beta V_{t-1} + (1-\beta) V_{t-1}$ is not accurate during the initial phase since we start with $V_0=0$. One way to fix this issue is to use the following bias correction method. So instead of taking $V_t$, take $V_t/(1-\beta^t)$. When t is large, it becomes $V_t$ so this fomrula becomes identical to the original exponentially weighted moving average formula. It is not used much in practice.
+
+5. RMSprop
+- RMSprop stands for root mean square prop. It has similar effect as momentum. It has effect of damping out the oscillation. It can also speed up gradient descent.
+- Basically we divide the parameters such as $dw$ by its root mean squared so that if the target parameter is large, $S_{dw}$ will be big thus dividing $dw$ with $S_{dw}$ will slow down the update.
+
+- $S_{dw} = \beta S_{dw} + (1-\beta) dw^2$
+- $W = W - alpha * (dw / \sqrt(S_{db}+e))$
 
 
- 
+6. ADAM(Adaptive Moment Estimation) optimization algorithm
+- Combination of momentum + RMSProp to dampen out the oscillation! It converges faster than the standard gradient descent.
+- Commonly used algirhtm proven to be very effective. It has the following parameters. learning rate(a), $\beta_1$ for momentum typially set to 0.9, $\beta_2$ for RMS prop typically set to 0.999, and the epsilon typically set to $10^{-8}$
+- Typically, values of $\beta_1$ and $\beta_2$ are fixed and we only need to tune \alpha.
+
+7. Hyper parameter tuning -- learning rate decay
+- Slowly reduce the learning rate as it converges.
+- method1: $alpha = 1/(decay_rate * epoch_number) * alpha_0$
+- there are other method such as exponential decay like $alpha = 0.95^{epoch_number}$
+
+8. Problem of local optima
+- In high-dimensional space, it's very highly unlike that you get stuck in local optima in all direction. It could be a saddle point (it can go down in other direction).
+- Problem is with plateaus. Plateaus can really slow down learning and a plateau is a region where the derivative is close to zero for a long time. 
+
 ## Useful references
 1. http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/
 2. https://stats.stackexchange.com/questions/211436/why-do-we-normalize-images-by-subtracting-the-datasets-image-mean-and-not-the-c
